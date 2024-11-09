@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+
+class TextForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  // Create a global key to manage the form state
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers for text fields
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  // Function to handle form submission
+  void _submitForm() {
+    if (_formKey.currentState?.validate() ?? false) {
+      // If the form is valid, show a Snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Form Submitted')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Registration Form ')),
+      body: Padding(
+        padding: EdgeInsets.all(13.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Name TextFormField
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16),
+              
+              // Email TextFormField
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 32),
+              
+              // Submit button
+              ElevatedButton(
+                onPressed: _submitForm,
+                child: Text('Submit'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
